@@ -1,0 +1,3 @@
+import {fromHtml} from 'hast-util-from-html';
+import {renderBlock} from '../editor/blocks.mjs';
+export default function notebookBlocks(){return tree=>{function visit(parent){if(!parent.children)return;parent.children=parent.children.flatMap(node=>{const code=node.tagName==='pre'&&node.children?.find(n=>n.tagName==='code');const language=code?.properties?.className?.find(c=>c==='language-notebook-math'||c==='language-notebook-video')?.slice(9);if(language){const text=code.children.map(n=>n.value||'').join('');return fromHtml(renderBlock(language,text),{fragment:true}).children;}visit(node);return [node];});}visit(tree);};}

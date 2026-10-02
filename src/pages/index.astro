@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import {getCollection} from 'astro:content';
+import {newestFirst} from '../lib/notebook';
+const posts = (await getCollection('posts')).sort(newestFirst);
+---
+<Base><section class="intro"><p class="eyebrow">A PERSONAL RESEARCH NOTEBOOK</p><h1>Ideas, examined.</h1><p class="lede">Notes on markets, quantitative research, and the practice of thinking clearly. A place to work through questions and keep a record of what I learn.</p></section><section aria-labelledby="recent"><div class="section-heading"><h2 id="recent">Recent writing</h2><a href="/archive/">View archive <span aria-hidden="true">↗</span></a></div><PostList posts={posts}/></section><aside class="margin-note">These first three entries are examples. The notebook begins here.</aside></Base>

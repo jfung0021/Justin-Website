@@ -1,0 +1,19 @@
+---
+import Base from './Base.astro';
+import {dateLabel,categories,readingTime} from '../lib/notebook';
+const {post,headings=[]} = Astro.props;
+const category = categories.find(c => c.name === post.data.category)!;
+const sections=headings.filter((h:any)=>h.depth>=2&&h.depth<=4);
+---
+<Base title={post.data.title} description={post.data.description}>
+<div class:list={["article-grid",{"without-toc":post.data.showToc===false}]}>{post.data.showToc!==false&&<aside class="reading-sidebar" aria-label="Article navigation"><div class="reading-sticky"><a href="#article-title" class="contents-title">On this page</a><progress id="reading-progress" value="0" max="100" aria-label="Reading progress"></progress><span id="reading-percent">0% read</span>{sections.length>0&&<ol>{sections.map((h:any)=><li class:list={{nested:h.depth===3,"deep-nested":h.depth===4}}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>}</div></aside>}
+<article class="reading" id="article"><header class="article-header"><div class="metadata"><a href={`/${category.slug}/`}>{post.data.category}</a><span>/</span>{post.data.type}</div><h1 id="article-title">{post.data.title}</h1><p class="lede">{post.data.description}</p><div class="article-meta"><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time> · {readingTime(post.body)} min read{post.data.example && ' · Example post'}</div>{post.data.tags.length>0&&<div class="tags">{post.data.tags.map((tag:string)=><span>#{tag}</span>)}</div>}</header><div class="prose"><slot/></div><a class="back-link" href={`/${category.slug}/`}>← More in {category.name}</a></article></div>
+</Base>
+<script>
+const article=document.getElementById('article');
+const progress=document.getElementById('reading-progress') as HTMLProgressElement;
+const label=document.getElementById('reading-percent');
+const links=[...document.querySelectorAll<HTMLAnchorElement>('.reading-sidebar ol a')];
+function update(){if(!article||!progress||!label)return;const start=article.getBoundingClientRect().top+window.scrollY;const distance=Math.max(1,article.offsetHeight-window.innerHeight);const percent=Math.round(Math.max(0,Math.min(100,(window.scrollY-start)/distance*100)));progress.value=percent;label.textContent=`${percent}% read`;let active:HTMLAnchorElement|undefined;for(const link of links){const heading=document.getElementById(decodeURIComponent(link.hash.slice(1)));if(heading&&heading.getBoundingClientRect().top<=140)active=link;}for(const link of links){if(link===active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');}}
+window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);window.addEventListener('load',update);if(article)new ResizeObserver(update).observe(article);update();
+</script>

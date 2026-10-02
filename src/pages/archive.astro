@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import {getCollection} from 'astro:content';
+import {newestFirst} from '../lib/notebook';
+const posts = (await getCollection('posts')).sort(newestFirst);
+const years = [...new Set(posts.map(p => p.data.date.getUTCFullYear()))];
+---
+<Base title="Archive"><header class="intro"><p class="eyebrow">THE COMPLETE NOTEBOOK</p><h1>Archive</h1><p class="lede">All writing, in reverse chronological order.</p></header>{years.map(year => <section aria-label={`Writing from ${year}`}><div class="section-heading"><h2>{year}</h2><span class="metadata">{posts.filter(p => p.data.date.getUTCFullYear() === year).length} entries</span></div><PostList posts={posts.filter(p => p.data.date.getUTCFullYear() === year)}/></section>)}</Base>
