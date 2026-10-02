@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/base-path.mjs';
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Page not found"><header class="intro"><p class="eyebrow">404</p><h1>This page is missing.</h1><p class="lede">The entry may have moved, or the address may be incomplete.</p><p><a href="/archive/">Return to the archive</a></p></header></Base>
+<Base title="Page not found"><header class="intro"><p class="eyebrow">404</p><h1>This page is missing.</h1><p class="lede">The entry may have moved, or the address may be incomplete.</p><p><a href={withBase('/archive/')}>Return to the archive</a></p></header></Base>

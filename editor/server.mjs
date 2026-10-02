@@ -1,3 +1,4 @@
+import siteConfig from '../astro.config.mjs';
 import {publishing} from './publishing.mjs';
 import http from 'node:http';
 import {createReadStream} from 'node:fs';
@@ -76,7 +77,7 @@ server.on('error',async error=>{
 });
 server.listen(port,'127.0.0.1',async()=>{
  console.log(`Editor ready: ${origin}`);if(process.argv.includes('--open'))openBrowser();
- try{const {dev}=await import('astro');astroServer=await dev({cacheDir:'./.editor-runtime/astro-cache',vite:{cacheDir:'.editor-runtime/vite-cache'},server:{host:'127.0.0.1',port:4322},devToolbar:{enabled:false}});siteUrl=`http://127.0.0.1:${astroServer.address.port}`;console.log(`Website ready: ${siteUrl}`);}catch(error){siteError='The website preview could not start. You can still edit and save posts. See .editor-runtime/server.log for details.';console.error(error);}
+ try{const {dev}=await import('astro');astroServer=await dev({cacheDir:'./.editor-runtime/astro-cache',vite:{cacheDir:'.editor-runtime/vite-cache'},server:{host:'127.0.0.1',port:4322},devToolbar:{enabled:false}});siteUrl=`http://127.0.0.1:${astroServer.address.port}${siteConfig.base?.replace(/\/$/,'')||''}`;console.log(`Website ready: ${siteUrl}`);}catch(error){siteError='The website preview could not start. You can still edit and save posts. See .editor-runtime/server.log for details.';console.error(error);}
 });
 
 
