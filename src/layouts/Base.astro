@@ -1,5 +1,4 @@
 ---
-import { withBase } from '../lib/base-path.mjs';
 import '../styles/global.css';
 import appearance from '../data/appearance.json';
 const fontStack=appearance.font==='Inter'?'InterVariable, Arial, sans-serif':appearance.font==='Segoe UI'?'Segoe UI, Arial, sans-serif':'Arial, Helvetica, sans-serif';
@@ -7,9 +6,9 @@ const { title = 'Alpha! Maybe.', description = 'A personal notebook on markets, 
 import { categories } from '../lib/notebook';
 const links = [{name:'Home',slug:''}, ...categories, {name:'Archive',slug:'archive'}, {name:'About',slug:'about'}];
 ---
-<!doctype html><html lang="en"><head><link rel="stylesheet" href={withBase('/fonts/fonts.css')}/><meta charset="UTF-8"/><meta name="viewport" content="width=device-width"/><meta name="description" content={description}/><title>{title === 'Alpha! Maybe.' ? 'Alpha! Maybe. — Research & writing' : `${title} — Alpha! Maybe.`}</title><link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml"/></head><body style={`--reading-font:${fontStack};--reading-size:${appearance.size/16}rem`}>
+<!doctype html><html lang="en"><head><link rel="stylesheet" href={'/fonts/fonts.css'}/><meta charset="UTF-8"/><meta name="viewport" content="width=device-width"/><meta name="description" content={description}/><title>{title === 'Alpha! Maybe.' ? 'Alpha! Maybe. — Research & writing' : `${title} — Alpha! Maybe.`}</title><link rel="icon" href={'/favicon.svg'} type="image/svg+xml"/></head><body style={`--reading-font:${fontStack};--reading-size:${appearance.size/16}rem`}>
 <a class="skip" href="#main">Skip to content</a>
-<div class="shell"><header class="site-header"><a class="wordmark" href={withBase('/')}>Alpha! Maybe.</a><span class="masthead-note">RESEARCH & WRITING</span></header>
-<nav aria-label="Main navigation">{links.map(link => <a href={withBase(`/${link.slug}${link.slug ? '/' : ''}`)} aria-current={Astro.url.pathname.replace(/\/$/, '') === withBase(`/${link.slug}${link.slug ? '/' : ''}`).replace(/\/$/, '') ? 'page' : undefined}>{link.name}</a>)}</nav>
-<main id="main"><slot/></main><footer><span>Alpha! Maybe. · A work in progress</span><a href={withBase('/about/')}>About this notebook</a></footer></div></body></html>
+<div class="shell"><header class="site-header"><a class="wordmark" href={'/'}>Alpha! Maybe.</a><span class="masthead-note">RESEARCH & WRITING</span></header>
+<nav aria-label="Main navigation">{links.map(link => <a href={`/${link.slug}${link.slug ? '/' : ''}`} aria-current={Astro.url.pathname.replace(/\/$/, '') === `/${link.slug}${link.slug ? '/' : ''}`.replace(/\/$/, '') ? 'page' : undefined}>{link.name}</a>)}</nav>
+<main id="main"><slot/></main><footer><span>Alpha! Maybe. · A work in progress</span><a href={'/about/'}>About this notebook</a></footer></div></body></html>
 

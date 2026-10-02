@@ -1,5 +1,4 @@
 ---
-import { withBase } from '../lib/base-path.mjs';
 import Base from '../layouts/Base.astro';
 import PostList from '../components/PostList.astro';
 import {getCollection} from 'astro:content';
@@ -8,4 +7,4 @@ export function getStaticPaths(){return categories.map(category => ({params:{cat
 const {category} = Astro.props;
 const posts = (await getCollection('posts',p => p.data.category === category.name)).sort(newestFirst);
 ---
-<Base title={category.name} description={category.description}><header class="intro"><p class="eyebrow">NOTEBOOK / {String(categories.findIndex(c => c.slug === category.slug)+1).padStart(2,'0')}</p><h1>{category.name}</h1><p class="lede">{category.description}</p></header><div class="section-heading"><h2>Writing</h2><span class="metadata">{posts.length} {posts.length === 1 ? 'entry' : 'entries'}</span></div>{posts.length ? <PostList posts={posts}/> : <div class="empty"><p>No entries here yet. This section is waiting for its first note.</p><a href={withBase('/archive/')}>Browse the archive</a></div>}</Base>
+<Base title={category.name} description={category.description}><header class="intro"><p class="eyebrow">NOTEBOOK / {String(categories.findIndex(c => c.slug === category.slug)+1).padStart(2,'0')}</p><h1>{category.name}</h1><p class="lede">{category.description}</p></header><div class="section-heading"><h2>Writing</h2><span class="metadata">{posts.length} {posts.length === 1 ? 'entry' : 'entries'}</span></div>{posts.length ? <PostList posts={posts}/> : <div class="empty"><p>No entries here yet. This section is waiting for its first note.</p><a href={'/archive/'}>Browse the archive</a></div>}</Base>
